@@ -3,7 +3,9 @@
 include 'classes/Player.php';
 include 'classes/Resource.php';
 
-$player = new Player(3,1,1,2,1);
+$resources = ['wood'=> 3, 'wool' => 2, 'clay' => 1, 'metal' => 1, 'wheat' => 2];
+$player = new Player($resources);
+var_dump($resources);
 
 
 

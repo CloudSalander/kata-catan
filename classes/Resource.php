@@ -6,7 +6,7 @@ abstract class Resource {
 	protected int $wheatCost;
 	protected int $metalCost;
 
-	public abstract function canPay(){}
+	public abstract function canPay();
 	public function getWoodCost(): int {
 		return $this->woodCost;
 	}
