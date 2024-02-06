@@ -1,9 +1,9 @@
 <?php 
 class Development extends Resource {
 	public function __construct() {
-		$this->wheatCost = 1;
-		$this->woolCost = 1;
-		$this->metalCost = 1;
+		$this->costs['wheat'] = 1;
+		$this->costs['wool'] = 1;
+		$this->costs['metal'] = 1;
 	}
 }
 
