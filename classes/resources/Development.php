@@ -5,6 +5,13 @@ class Development extends Resource {
 		$this->costs['wool'] = 1;
 		$this->costs['metal'] = 1;
 	}
+
+	protected function canPay(array $resources): bool {
+		if($resources['wool'] < 1 || $resources['metal'] < 1
+				|| $resources['wheat'] < 1) return false;
+		return true; 
+	}
+
 }
 
 ?>

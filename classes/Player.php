@@ -1,6 +1,7 @@
 <?php
 /*
 TODO: Decouple specific resources from Player.
+TODO: Maybe separate "Menu" features from player?
 */
 
 include_once 'Resource.php';
@@ -10,11 +11,15 @@ include_once 'resources/Town.php';
 include_once 'resources/City.php';
 
 
-
 class Player{
 
 	private string $name;
 	private array $resources;
+	const BUYING_MSGS = ['Please,select the number of the option you want to select(1 to 4)',
+						  '1- Road',
+						  '2- Town',
+						  '3- City',
+						  '4- Development'];
 
 	public function __construct(array $resources) {
 		$this->resources = $resources;
@@ -60,20 +65,24 @@ class Player{
 		$this->resources['metal'] += $units;
 	}
 
+	/*TO-DO: Refactor this method*/
 	public function buy(): bool {
 		$this->showBuyingOptions();
 		$option = $this->getBuyingOption();
 		if($option) {
-			$this->pay($option);
+			$buy_result = $this->pay($option);
 		}
+		if($buy_result) {
+			$this->updateResources($buy_result);
+			return true;				
+		}
+		return false;
 	}
 
 	private function showBuyingOptions(): void {
-		echo 'Please,select the number of the option you want to select(1 to 4)'.PHP_EOL;
-		echo '1- Road'.PHP_EOL;
-		echo '2- Town'.PHP_EOL;
-		echo '3- City'.PHP_EOL;
-		echo '4- Development'.PHP_EOL;
+		foreach(Player::BUYING_MSGS as $buying_msg) {
+			echo $buying_msg.PHP_EOL;
+		}
 	}
 
 	private function getBuyingOption(): bool | int {
@@ -82,9 +91,9 @@ class Player{
 		return false;
 	}
 
-	private function pay(int $option):void {
+	private function pay(int $option): bool | array {
 		$resource = $this->getResource($option);
-		$resource->pay();		
+		return $resource->pay($this->resources);		
 	}
 
 	private function getResource(int $option): Resource {
@@ -105,6 +114,12 @@ class Player{
 				break;
 		}
 		return $resource;
+	}
+
+	private function updateResources(array $buy_result): void {
+		foreach($buy_result as $key=>$resource_cost) {
+			$this->resources[$key] -= $resource_cost;
+		}
 	}
 }
 
