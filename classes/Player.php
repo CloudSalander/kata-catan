@@ -1,5 +1,18 @@
 <?php
+/*
+TODO: Decouple specific resources from Player.
+*/
+
+include_once 'Resource.php';
+include_once 'resources/Road.php';
+include_once 'resources/Development.php';
+include_once 'resources/Town.php';
+include_once 'resources/City.php';
+
+
+
 class Player{
+
 	private string $name;
 	private array $resources;
 
@@ -47,7 +60,52 @@ class Player{
 		$this->resources['metal'] += $units;
 	}
 
+	public function buy(): bool {
+		$this->showBuyingOptions();
+		$option = $this->getBuyingOption();
+		if($option) {
+			$this->pay($option);
+		}
+	}
 
+	private function showBuyingOptions(): void {
+		echo 'Please,select the number of the option you want to select(1 to 4)'.PHP_EOL;
+		echo '1- Road'.PHP_EOL;
+		echo '2- Town'.PHP_EOL;
+		echo '3- City'.PHP_EOL;
+		echo '4- Development'.PHP_EOL;
+	}
+
+	private function getBuyingOption(): bool | int {
+		$option = readline();
+		if (is_numeric($option) && $option > 0 && $option <= 4) return intval($option);
+		return false;
+	}
+
+	private function pay(int $option):void {
+		$resource = $this->getResource($option);
+		$resource->pay();		
+	}
+
+	private function getResource(int $option): Resource {
+		switch ($option) {
+			case 1:
+				$resource = new Road();
+				break;
+			case 2: 
+				$resource = new Town();
+				break;
+			case 3: 
+				$resource = new City();
+				break;
+			case 4:
+				$resource = new Development();
+				break;
+			default:
+				break;
+		}
+		return $resource;
+	}
 }
 
 

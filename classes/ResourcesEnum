@@ -1,5 +1,0 @@
-enum Resource
-{
-    case WOOD = "Wood";
-    case  = "P;
-    
